@@ -1,7 +1,7 @@
 ---
 title: "Lab 06 - Ugly charts and Simpson's paradox"
-author: "Insert your name here"
-date: "Insert date here"
+author: "George Nesbitt"
+date: "02/18"
 output: github_document
 ---
 
@@ -12,23 +12,79 @@ library(tidyverse)
 library(dsbox)
 library(mosaicData) 
 ```
+```{r load}
+staff <- read_csv("data/instructional-staff.csv")
+```
 
+
+```{r intro code}
+staff_long <- staff %>%
+  pivot_longer(cols = -faculty_type, names_to = "year") %>%
+  mutate(value = as.numeric(value))
+```
+```{r}
+staff_long %>%
+  ggplot(aes(
+    x = year,
+    y = value,
+    group = faculty_type,
+    color = faculty_type
+    
+  )) +
+  geom_line(size=4) +
+  labs(x="year", y="hires", title="Hires by type of faculty by year")
+```
 ### Exercise 1
-
-Remove this text, and add your answer for Exercise 1 here.
-Add code chunks as needed.
-Don't forget to label your code chunk.
-Do not use spaces in code chunk labels.
-
+```{r look at data}
+data(Whickham)
+glimpse(Whickham)
+```
+I think that this data most likely came from observational studies because it would be unethical to run an experiment such as this. Especially one resulting in the death of lots of people.
 ### Exercise 2
-
-Remove this text, and add your answer for Exercise 1 here.
-Add code chunks as needed.
-Don't forget to label your code chunk.
-Do not use spaces in code chunk labels.
+There are 1,314 rows (observations) and 3 columns. Each column represents a smoker/non-smoker in whickham. 
 
 ### Exercise 3
+There are three variables (columns). The first variable is outcome, this is a 
 
-...
 
-Add exercise headings as needed.
+### Excercise 4
+I would expect there to be a positive relationship between smoking status and death given there are serious health risk associated with the behavior.
+
+### Excercise 5
+```{r count}
+Whickham %>%
+  count(smoker, outcome)
+```
+```{r create visualization}
+Whickham %>% 
+  ggplot(aes(x=smoker, fill=outcome)) +
+  geom_bar()
+labs(
+  title="Health Outcomes by smoking status",
+  x="Smoking status",
+  fill="Outcome"
+)
+```
+```{r find prob}
+Whickham %>% count(smoker, outcome) %>% group_by(smoker) %>% 
+  mutate(probability = n /sum(n))
+```
+
+### Excercise 6
+```{r create new variable}
+Whickham <- Whickham %>% mutate(age_cat=case_when(
+                                age <= 44 ~ "18-44",
+                                age > 44 & age <= 64 ~ "45-64",
+                                age > 64 ~ "65+"))
+```
+### Excercise 7
+```{r}
+Whickham %>% 
+  ggplot(aes(x=smoker, fill=outcome)) +
+  geom_bar() + facet_wrap(~age_cat)
+labs(
+  title="Health Outcomes by smoking status",
+  x="Smoking status",
+  fill="Outcome")
+```
+
