@@ -87,4 +87,9 @@ labs(
   x="Smoking status",
   fill="Outcome")
 ```
+You can tell that the amount of dead people increased as age increased. This is the case for both smokers and non smokers, however in each age group there is a higher percentage of dead in smokers. 
+```{r}
+Whickham %>% count(smoker, outcome, age_cat) %>% group_by(smoker) %>% 
+  mutate(probability = n /sum(n))
+```
 

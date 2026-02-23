@@ -158,3 +158,29 @@ labs(
     ##  $ x    : chr "Smoking status"
     ##  $ fill : chr "Outcome"
     ##  $ title: chr "Health Outcomes by smoking status"
+
+You can tell that the amount of dead people increased as age increased.
+This is the case for both smokers and non smokers, however in each age
+group there is a higher percentage of dead in smokers.
+
+``` r
+Whickham %>% count(smoker, outcome, age_cat) %>% group_by(smoker) %>% 
+  mutate(probability = n /sum(n))
+```
+
+    ## # A tibble: 12 × 5
+    ## # Groups:   smoker [2]
+    ##    smoker outcome age_cat     n probability
+    ##    <fct>  <fct>   <chr>   <int>       <dbl>
+    ##  1 No     Alive   18-44     327      0.447 
+    ##  2 No     Alive   45-64     147      0.201 
+    ##  3 No     Alive   65+        28      0.0383
+    ##  4 No     Dead    18-44      12      0.0164
+    ##  5 No     Dead    45-64      53      0.0724
+    ##  6 No     Dead    65+       165      0.225 
+    ##  7 Yes    Alive   18-44     270      0.464 
+    ##  8 Yes    Alive   45-64     167      0.287 
+    ##  9 Yes    Alive   65+         6      0.0103
+    ## 10 Yes    Dead    18-44      15      0.0258
+    ## 11 Yes    Dead    45-64      80      0.137 
+    ## 12 Yes    Dead    65+        44      0.0756
