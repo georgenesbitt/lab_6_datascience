@@ -39,7 +39,9 @@ staff_long %>%
 data(Whickham)
 glimpse(Whickham)
 ```
+
 I think that this data most likely came from observational studies because it would be unethical to run an experiment such as this. Especially one resulting in the death of lots of people.
+
 ### Exercise 2
 There are 1,314 rows (observations) and 3 columns. Each column represents a smoker/non-smoker in whickham. 
 
@@ -77,7 +79,9 @@ Whickham <- Whickham %>% mutate(age_cat=case_when(
                                 age > 44 & age <= 64 ~ "45-64",
                                 age > 64 ~ "65+"))
 ```
+
 ### Excercise 7
+
 ```{r}
 Whickham %>% 
   ggplot(aes(x=smoker, fill=outcome)) +
